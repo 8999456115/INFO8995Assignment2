@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    restart: on-failure
+    environment:
+      - DB_HOST=db
+      - POSTGRES_USER=appuser
+      - POSTGRES_PASSWORD=securepass
+      - POSTGRES_DB=userdb
+    depends_on:
+      - db
+    networks:
+      - backend
+    volumes:
+      - logs:/app/logs
+    # ✅ Commented out for scaling
+    # ports:
+    #   - "5000:5000"
+
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: appuser
+      POSTGRES_PASSWORD: securepass
+      POSTGRES_DB: userdb
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - backend
+
+volumes:
+  db-data:
+  logs:
+
+networks:
+  backend:
