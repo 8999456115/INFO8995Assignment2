@@ -4,6 +4,14 @@ from db import init_db, insert_user, get_user_by_id
 app = Flask(__name__)
 init_db()
 
+@app.route('/')
+def home():
+    return (
+        "🚀 Flask API is running!<br>"
+        "Use <code>POST /user</code> to create a user, and <code>GET /user/&lt;id&gt;</code> to retrieve a user.",
+        200
+    )
+
 @app.route('/user', methods=['POST'])
 def create_user():
     data = request.get_json()

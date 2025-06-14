@@ -15,9 +15,8 @@ services:
       - backend
     volumes:
       - logs:/app/logs
-    # ✅ Commented out for scaling
-    # ports:
-    #   - "5000:5000"
+    ports:
+      - "5000:5000"
 
   db:
     image: postgres:15
